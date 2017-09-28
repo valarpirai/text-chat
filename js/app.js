@@ -70,13 +70,6 @@ function myjsapp(peerClient) {
             }
         });
 
-        $('.end-call').click(function(event) {
-            // clear CSS for mute buttons
-            $('.mute-audio, .mute-video').removeClass('btn-success').addClass('btn-secondary')
-                // End established call
-            peerClient.endCall();
-        })
-
         $('#user-name').keypress(function(event) {
             if (13 == event.which) {
                 var username = $('#user-name').val().trim();
@@ -91,44 +84,13 @@ function myjsapp(peerClient) {
             if (cookie.get('username') != username)
                 startPeerClient(username)
         })
-
-
-        $('.accept-call').click(function(event) {
-            // End established call
-            peerClient.acceptIncomingCall();
-        })
-        $('.reject-call').click(function(event) {
-            // End established call
-            peerClient.rejectIncomingCall();
-        })
-
-        $('.mute-audio').click(function(event) {
-            if ($(this).hasClass('btn-secondary')) {
-                $(this).removeClass('btn-secondary').addClass('btn-success')
-                    // End established call
-                peerClient.muteAudio(false);
-            } else {
-                $(this).removeClass('btn-success').addClass('btn-secondary')
-                peerClient.muteAudio(true);
-            }
-        })
-        $('.mute-video').click(function(event) {
-            if ($(this).hasClass('btn-secondary')) {
-                $(this).removeClass('btn-secondary').addClass('btn-success')
-                    // End established call
-                peerClient.muteVideo(false);
-            } else {
-                $(this).removeClass('btn-success').addClass('btn-secondary')
-                peerClient.muteVideo(true);
-            }
-        })
     }
 
     function appendToHistory(id, message, isSent) {
         if (chatHistory[id]) {
             var hist = chatHistory[id];
             var fromTxt = isSent ? 'You' : id
-            var msg = $('<li><b>' + fromTxt + ': </b></li>').append('<span>' + message + '</span')
+            var msg = $('<li><b>' + fromTxt + ': </b> </li>').append('<span>' + message + '</span')
             hist.append(msg)
                 .scrollTop(hist[0].scrollHeight);
         }
@@ -158,14 +120,14 @@ function myjsapp(peerClient) {
 
         createChatWindow: function(id) {
             var toPeerId = id;
-            var panel = $('<div class="panel panel-primary chat-div"><div class="panel-heading"></div>' +
+            var panel = $('<div class="chat-div"><div class="panel-heading"></div>' +
                 '<div class="panel-body"></div><div class="panel-footer">' +
-                '<div class="form-inline"><div class="form-group">' +
+                '<div class=""><div class="form-group">' +
                 '</div></div></div></div>')
 
             var title = $('<span class="panel-title"></span>').text(toPeerId)
             var history = $('<ul class="chatHistory"></ul>')
-            var message = $('<input type="text" class="form-control" placeholder="Enter Message">')
+            var message = $('<input type="text" class="text-msg form-control mr-3" placeholder="Enter Message">')
             var sendBtn = $('<button type="button" class="btn btn-outline-primary">Send</button>')
 
             chatHistory[toPeerId] = history
@@ -217,30 +179,6 @@ function myjsapp(peerClient) {
                 delete chatPanel[id]
                 delete chatHistory[id]
             }
-        },
-        showVideoCall: function(options) {
-            $('#videoCallPanel').modal('show')
-            if (options['video'])
-                $('#videoCallPanel .title').text('Video Call')
-            else
-                $('#videoCallPanel .title').text('Voice Call')
-        },
-        showIncomingCall: function(peerId, options) {
-            $('#callConfirmationModal').modal('show')
-            if (options['video'])
-                var txt = "Incoming Video call from : " + peerId
-            else
-                var txt = "Incoming Voice call from : " + peerId
-            $('#callConfirmationModal .peer-name').text(txt)
-        },
-        closeVideoCall: function() {
-            $('.end-call').click()
-        },
-        setTheirVideo: function(stream) {
-            $('#their-video').prop('src', URL.createObjectURL(stream));
-        },
-        setMyVideo: function(stream) {
-            $('#my-video').prop('src', URL.createObjectURL(stream));
         },
         showError: function(msg) {
 
