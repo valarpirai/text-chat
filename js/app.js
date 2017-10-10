@@ -91,6 +91,9 @@ function myjsapp(peerClient) {
 
     function appendToHistory(id, message, isSent) {
         if (chatHistory[id]) {
+            $('.chat-div').addClass('hide');
+            $('.' + id).removeClass('hide');
+
             var hist = chatHistory[id];
             var fromTxt = isSent ? 'You' : id
             var msg = $('<li><b>' + fromTxt + ': </b> </li>').append('<span>' + message + '</span')
