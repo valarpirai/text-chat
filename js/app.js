@@ -41,6 +41,9 @@ function myjsapp(peerClient) {
             if (id) {
                 peerClient.connectToId(id.toLowerCase())
             }
+
+            $('.chat-div').addClass('hide');
+            $('.' + id).removeClass('hide');
         }
 
         $(document).on('click', '.peeruser', function() {
@@ -120,7 +123,7 @@ function myjsapp(peerClient) {
 
         createChatWindow: function(id) {
             var toPeerId = id;
-            var panel = $('<div class="chat-div"><div class="panel-heading"></div>' +
+            var panel = $('<div class="chat-div ' + id + '"><div class="panel-heading"></div>' +
                 '<div class="panel-body"></div><div class="panel-footer">' +
                 '<div class=""><div class="form-group">' +
                 '</div></div></div></div>')
